@@ -1,81 +1,332 @@
-/* LETTER CONTAINER */
+/* ═══════════════════════════════════════
+   CSS VARIABLES — extended & refined
+═══════════════════════════════════════ */
+:root {
+  --cream:        #fdf8f2;
+  --parchment:    #f8f0e3;
+  --light-blush:  #f0d9db;
+  --blush:        #e8b4b8;
+  --rose:         #c96b74;
+  --deep-rose:    #8b3a42;
+  --gold:         #d4b686;
+  --dark:         #2f1e22;
+  --shadow-soft:  0 16px 38px rgba(139, 58, 66, 0.11);
+  --shadow-deep:  0 28px 60px rgba(139, 58, 66, 0.16);
+  --gold-trans:   rgba(212, 182, 134, 0.28);
+}
+
+/* ── Font smoothing & subpixel rendering ── */
+html {
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════
+   BASE & GRAIN
+═══════════════════════════════════════ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--cream);
+  min-height: 100dvh;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  color: var(--dark);
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.45;
+  mix-blend-mode: multiply;
+}
+
+/* ═══════════════════════════════════════
+   PARTICLES CANVAS
+═══════════════════════════════════════ */
+#particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════
+   SCENE WRAPPER
+═══════════════════════════════════════ */
+.scene {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5vh 16px 10vh;
+  width: 100%;
+  min-height: 100dvh;
+}
+
+/* ═══════════════════════════════════════
+   HINT
+═══════════════════════════════════════ */
+.hint {
+  font-family: system-ui, sans-serif;
+  font-weight: 300;
+  font-size: clamp(11px, 2.1vw, 13.5px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--rose);
+  opacity: 0;
+  animation: fadeIn 1.4s ease-out 1s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 0.75; }
+}
+
+/* ═══════════════════════════════════════
+   ENVELOPE — smoother & richer
+═══════════════════════════════════════ */
+.envelope-wrap {
+  perspective: 1400px;
+  cursor: pointer;
+  margin: 8vh 0 12vh;
+}
+
+.envelope {
+  width:  clamp(320px, 42vw, 400px);
+  height: clamp(220px, 28vw, 280px);
+  position: relative;
+  transform-style: preserve-3d;
+  filter: drop-shadow(var(--shadow-soft));
+  transition: filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, filter;
+}
+
+.envelope-wrap:hover .envelope {
+  filter: drop-shadow(var(--shadow-deep));
+  transform: translateY(-10px);
+}
+
+.envelope.shaking {
+  animation: shake 0.7s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+
+.envelope.fade-out {
+  animation: envelopeExit 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ── Envelope parts ── */
+.env-body {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #faf3e8 0%, var(--parchment) 50%, #f0e0c8 100%);
+  border-radius: 6px 6px 12px 12px;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.4);
+}
+
+.env-flap {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 58%;
+  background: linear-gradient(to bottom, #f5e8d0, #e8d6b8);
+  clip-path: polygon(0 0, 50% 92%, 100% 0);
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  transition: transform 0.95s cubic-bezier(0.23, 1, 0.32, 1.05);
+  will-change: transform;
+  z-index: 5;
+}
+
+.env-flap.open {
+  transform: rotateX(-178deg) translateZ(2px);
+}
+
+/* Wax seal */
+.seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 58px;
+  height: 58px;
+  background: radial-gradient(circle at 38% 32%, #e07088, var(--deep-rose));
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgba(139,58,66,0.42), inset 0 2px 5px rgba(255,255,255,0.35);
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  color: white;
+  z-index: 10;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.seal.broken {
+  transform: translate(-50%, -50%) scale(0.1) rotate(180deg);
+  opacity: 0;
+}
+
+/* ═══════════════════════════════════════
+   LETTER
+═══════════════════════════════════════ */
 .letter-container {
   position: absolute;
-  top: 50px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(760px, 92vw);           /* slightly wider base */
-  max-width: 780px;
-  z-index: 10;
+  width: min(820px, 94vw);
+  z-index: 8;
   opacity: 0;
   pointer-events: none;
-  transition:
-    top 0.95s cubic-bezier(0.34, 1.48, 0.64, 1.2),
-    opacity 0.55s ease;
+  transition: opacity 0.6s ease, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1.2);
 }
 
 .letter-container.rising {
-  top: -580px;                       /* tuned rise distance – adjust if needed */
+  transform: translateX(-50%) translateY(-580px) scale(1.04);
   opacity: 1;
   pointer-events: auto;
 }
 
 .letter-container.settled {
   position: relative;
-  top: auto;
-  left: auto;
   transform: none;
   opacity: 1;
-  pointer-events: auto;
   transition: none;
 }
 
-/* LETTER PAPER — aim for ~1.45:1 ratio landscape */
+/* Paper */
 .letter-paper {
-  background: linear-gradient(180deg, #fffdf8 0%, #fdf8f0 100%);
-  border-radius: 5px;
-  aspect-ratio: 1.44 / 1;            /* ← most important change – real letter feeling */
-  width: 100%;
-  min-height: 380px;                 /* fallback if aspect-ratio not supported */
-  max-height: 94vh;                  /* prevent insane height on small screens */
-  box-shadow:
-    0 12px 48px rgba(0,0,0,0.11),
-    0 3px 8px rgba(0,0,0,0.07),
-    inset 0 0 0 1px rgba(201,169,110,0.18);
-  position: relative;
+  background: linear-gradient(180deg, #fffefb 0%, #fdfaf4 100%);
+  border-radius: 6px;
+  box-shadow: var(--shadow-deep), inset 0 0 0 1px var(--gold-trans);
   overflow: hidden;
   display: grid;
-  grid-template-columns: 160px 1fr;  /* left panel still narrow */
+  grid-template-columns: minmax(140px, 160px) 1fr;
+  min-height: 480px;
+  position: relative;
 }
 
-/* Mobile – collapse to portrait/stacked */
-@media (max-width: 640px) {          /* slightly higher breakpoint feels better */
-  .letter-container {
-    width: min(94vw, 420px);
-  }
+/* ── Decorative left column ── */
+.letter-left-panel {
+  background: linear-gradient(170deg, var(--parchment), #f3e4d0);
+  border-right: 1px solid var(--gold-trans);
+  padding: 48px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
 
-  .letter-paper {
-    aspect-ratio: auto;              /* disable forced landscape ratio */
-    grid-template-columns: 1fr;
-    min-height: auto;
-    max-height: none;
-  }
+/* ── Main content ── */
+.letter-right-panel {
+  padding: 52px 56px 48px 44px;
+  position: relative;
+}
 
-  .letter-container.rising {
-    top: -720px;                     /* more rise needed because taller now */
-  }
+.letter-right-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 28px,
+    rgba(212,182,134,0.07) 28px,
+    rgba(212,182,134,0.07) 29px
+  );
+  pointer-events: none;
+}
 
-  .letter-right-panel {
-    padding: 28px 24px 32px;
-  }
+/* Typography */
+.letter-heading {
+  font-family: "Sacramento", cursive;
+  font-size: clamp(38px, 7vw, 54px);
+  color: var(--rose);
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s;
+}
 
-  .letter-heading {
-    font-size: 34px;
-    margin-bottom: 20px;
-  }
+.letter-heading.visible  { opacity: 1; transform: none; }
 
-  .letter-body {
-    font-size: 15.5px;
-    line-height: 1.82;
+.letter-body p {
+  font-size: 17px;
+  line-height: 1.9;
+  margin-bottom: 1.1em;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.8s ease-out;
+}
+
+.letter-body p.visible { opacity: 1; transform: none; }
+
+.letter-body p:last-of-type {
+  font-family: "Sacramento", cursive;
+  font-size: 32px;
+  color: var(--rose);
+  text-align: right;
+  margin-top: 2em;
+}
+
+/* Floating hearts — smoother curve */
+.floating-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 100;
+  will-change: transform, opacity;
+  animation: floatHeart 5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes floatHeart {
+  0%   { transform: translateY(0) scale(0.6) rotate(0deg);   opacity: 0; }
+  15%  { opacity: 0.95; transform: translateY(-12vh) scale(1.18); }
+  100% { transform: translateY(-140vh) scale(0.4) rotate(900deg); opacity: 0; }
+}
+
+/* ── Shake & exit ── */
+@keyframes shake {
+  0%,100% { transform: translateX(0) rotate(0deg); }
+  20%  { transform: translateX(-10px) rotate(-4deg); }
+  40%  { transform: translateX(10px) rotate(4deg); }
+  60%  { transform: translateX(-7px) rotate(-2.5deg); }
+  80%  { transform: translateX(7px) rotate(2.5deg); }
+}
+
+@keyframes envelopeExit {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  50%  { opacity: 1; transform: translateY(18px) scale(0.96); }
+  100% { opacity: 0; transform: translateY(60px) scale(0.88); }
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 680px) {
+  .envelope        { width: 300px; height: 210px; }
+  .letter-paper    { grid-template-columns: 1fr; min-height: auto; }
+  .letter-left-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 16px;
+    border-right: none;
+    border-bottom: 1px solid var(--gold-trans);
   }
+  .letter-right-panel { padding: 32px 28px 36px; }
+  .letter-heading     { font-size: 42px; }
+  .letter-body        { font-size: 15.5px; line-height: 1.82; }
+  .letter-container.rising { transform: translateX(-50%) translateY(-720px) scale(1.03); }
 }
