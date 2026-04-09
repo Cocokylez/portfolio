@@ -1,11 +1,8 @@
-/* =====================================================
-   PORTFOLIO — styles.css
-   Adrian Kyle Condeza · iOS Glassy Aesthetic
-   ===================================================== */
+/* PORTFOLIO — styles.css */
 
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap");
 
-/* ---- Variables: Light ---- */
+/* Variables: Light */
 :root {
   --bg: #f2f2f7;
   --bg-alt: #ffffff;
@@ -35,7 +32,7 @@
   --orb3: rgba(0, 200, 180, 0.12);
 }
 
-/* ---- Variables: Dark ---- */
+/* Variables: Dark */
 body.dark {
   --bg: #0d0d0f;
   --bg-alt: #1c1c1e;
@@ -60,7 +57,7 @@ body.dark {
   --orb3: rgba(0, 220, 200, 0.09);
 }
 
-/* ---- Reset ---- */
+/*Reset  */
 *,
 *::before,
 *::after {
@@ -94,7 +91,7 @@ ul {
   list-style: none;
 }
 
-/* ---- Ambient orbs ---- */
+/* Ambient orbs*/
 .bg-orb {
   position: fixed;
   border-radius: 50%;
@@ -141,7 +138,7 @@ ul {
   }
 }
 
-/* ---- Custom Cursor ---- */
+/* Custom Cursor*/
 #cursor {
   width: 10px;
   height: 10px;
@@ -185,7 +182,7 @@ body.cursor-hover #cursor-trail {
   height: 50px;
 }
 
-/* ---- Loading ---- */
+/* Loading */
 #loading-screen {
   position: fixed;
   inset: 0;
@@ -228,7 +225,7 @@ body.cursor-hover #cursor-trail {
   }
 }
 
-/* ---- Navigation ---- */
+/* Navigation */
 #navbar {
   position: fixed;
   top: 0;
@@ -551,7 +548,7 @@ main {
   justify-content: center;
 }
 
-/* ---- Buttons ---- */
+/* Buttons*/
 .btn {
   display: inline-flex;
   align-items: center;
@@ -684,7 +681,7 @@ main {
   color: var(--text-primary);
 }
 
-/* ---- Placeholder cards ---- */
+/* Placeholder cards */
 .placeholder-card {
   display: flex;
   flex-direction: column;
@@ -711,7 +708,7 @@ main {
   max-width: 340px;
 }
 
-/* ---- Contact ---- */
+/* Contact */
 .contact-links {
   display: flex;
   flex-direction: column;
@@ -813,7 +810,7 @@ main {
   min-height: 120px;
 }
 
-/* ---- Footer ---- */
+/* Footer */
 .footer {
   text-align: center;
   padding: 28px;
@@ -827,7 +824,7 @@ main {
     border-color 0.5s;
 }
 
-/* ---- Fade-in ---- */
+/* Fade-in */
 .fade-in {
   opacity: 0;
   transform: translateY(22px);
@@ -849,7 +846,7 @@ main {
   transition-delay: 0.3s;
 }
 
-/* ---- Responsive ---- */
+/* Responsive  */
 @media (max-width: 680px) {
   .nav-links {
     display: none;
