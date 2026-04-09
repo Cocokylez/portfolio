@@ -1,9 +1,6 @@
-/* =====================================================
-   PORTFOLIO — script.js
-   Adrian Kyle Condeza
-   ===================================================== */
+/* PORTFOLIO — script.js */
 
-/* ---- 1. Loading Screen ---- */
+/* Loading Screen */
 window.addEventListener("load", () => {
   const loader = document.getElementById("loading-screen");
   setTimeout(() => {
@@ -12,7 +9,7 @@ window.addEventListener("load", () => {
   }, 1000);
 });
 
-/* ---- 2. Dark Mode ---- */
+/* Dark Mode */
 const darkToggle = document.getElementById("dark-toggle");
 const toggleIcon = document.getElementById("toggle-icon");
 
@@ -31,7 +28,7 @@ if (darkToggle && toggleIcon) {
   });
 }
 
-/* ---- 3. Custom Cursor ---- */
+/* Custom Cursor */
 const cursor = document.getElementById("cursor");
 const trail = document.getElementById("cursor-trail");
 let trailX = 0,
@@ -57,19 +54,19 @@ if (cursor && trail) {
 
   document
     .querySelectorAll(
-      "a, button, .skill-pill, .contact-card, .form-input, .avatar-glass",
+      "a, button, .skill-pill, .contact-card, .form-input, .avatar-glass"
     )
     .forEach((el) => {
       el.addEventListener("mouseenter", () =>
-        document.body.classList.add("cursor-hover"),
+        document.body.classList.add("cursor-hover")
       );
       el.addEventListener("mouseleave", () =>
-        document.body.classList.remove("cursor-hover"),
+        document.body.classList.remove("cursor-hover")
       );
     });
 }
 
-/* ---- 4. Navbar scroll + active section ---- */
+/* Navbar Scroll & Active Section */
 const navbar = document.getElementById("navbar");
 const sections = document.querySelectorAll("section[id]");
 const navLinks = document.querySelectorAll(".nav-link");
@@ -77,32 +74,40 @@ const navLinks = document.querySelectorAll(".nav-link");
 function updateNav() {
   if (!navbar) return;
   navbar.classList.toggle("scrolled", window.scrollY > 10);
+
   let current = "";
   sections.forEach((sec) => {
     if (window.scrollY >= sec.offsetTop - 90) current = sec.id;
   });
+
   navLinks.forEach((link) => {
     link.classList.toggle(
       "active",
-      link.getAttribute("href") === "#" + current,
+      link.getAttribute("href") === "#" + current
     );
   });
 }
+
 window.addEventListener("scroll", updateNav, { passive: true });
 updateNav();
 
-/* ---- 5. Smooth Scroll ---- */
+/* Smooth Scroll */
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", (e) => {
     const target = document.querySelector(anchor.getAttribute("href"));
     if (!target) return;
+
     e.preventDefault();
-    window.scrollTo({ top: target.offsetTop - 64, behavior: "smooth" });
+    window.scrollTo({
+      top: target.offsetTop - 64,
+      behavior: "smooth",
+    });
+
     closeMobileMenu();
   });
 });
 
-/* ---- 6. Mobile Menu ---- */
+/* Mobile Menu */
 const hamburger = document.getElementById("hamburger");
 const mobileMenu = document.getElementById("mobile-menu");
 
@@ -116,8 +121,9 @@ hamburger?.addEventListener("click", () => {
   mobileMenu.classList.toggle("open");
 });
 
-/* ---- 7. Scroll Fade-In ---- */
+/* Scroll Fade-In */
 const fadeEls = document.querySelectorAll(".fade-in");
+
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -127,7 +133,10 @@ const observer = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.1, rootMargin: "0px 0px -30px 0px" },
+  {
+    threshold: 0.1,
+    rootMargin: "0px 0px -30px 0px",
+  }
 );
 
 function triggerVisible() {
@@ -141,32 +150,38 @@ function triggerVisible() {
   });
 }
 
-/* ---- 8. Footer Year ---- */
+/* Footer Year */
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-/* ---- 9. Contact Form ---- */
+/* Contact Form */
 const sendBtn = document.querySelector(".btn-full");
+
 if (sendBtn) {
   sendBtn.addEventListener("click", () => {
     const inputs = document.querySelectorAll(".form-input");
     let allFilled = true;
+
     inputs.forEach((input) => {
       if (!input.value.trim()) {
         allFilled = false;
         input.style.borderColor = "rgba(255, 59, 48, 0.5)";
         input.style.boxShadow = "0 0 0 3px rgba(255, 59, 48, 0.08)";
+
         setTimeout(() => {
           input.style.borderColor = "";
           input.style.boxShadow = "";
         }, 1800);
       }
     });
+
     if (allFilled) {
       sendBtn.textContent = "✓ Message Sent!";
       sendBtn.style.background = "#34c759";
       sendBtn.style.boxShadow = "0 4px 18px rgba(52,199,89,0.35)";
+
       inputs.forEach((i) => (i.value = ""));
+
       setTimeout(() => {
         sendBtn.textContent = "Send Message";
         sendBtn.style.background = "";
